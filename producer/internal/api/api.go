@@ -25,11 +25,9 @@ func New(timeout time.Duration, currencyName string) *API {
 }
 
 func (a API) Start(infoChan chan<- []entities.Currency, exit <-chan interface{}) {
-	do := make(chan interface{}, 1)
-	go a.wait(do)
 	for {
 		select {
-		case <-do:
+		case <-time.After(a.timeout):
 			result, err := a.getCurrency()
 			if err != nil {
 				continue
@@ -39,13 +37,6 @@ func (a API) Start(infoChan chan<- []entities.Currency, exit <-chan interface{})
 		case <-exit:
 			return
 		}
-	}
-}
-
-func (a API) wait(do chan<- interface{}) {
-	for {
-		time.Sleep(a.timeout)
-		do <- struct{}{}
 	}
 }
 
