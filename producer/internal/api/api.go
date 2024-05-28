@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,23 +25,23 @@ func New(timeout time.Duration, currencyName string) *API {
 	}
 }
 
-func (a API) Start(infoChan chan<- []entities.Currency, exit <-chan interface{}) {
+func (a API) Start(ctx context.Context, infoChan chan<- []entities.Currency) {
 	for {
 		select {
 		case <-time.After(a.timeout):
-			result, err := a.getCurrency()
+			result, err := a.getCurrency(ctx)
 			if err != nil {
 				continue
 			}
 
 			infoChan <- result
-		case <-exit:
+		case <-ctx.Done():
 			return
 		}
 	}
 }
 
-func (a API) getCurrency() (result []entities.Currency, err error) {
+func (a API) getCurrency(_ context.Context) (result []entities.Currency, err error) {
 	resp, err := http.Get(a.URL)
 	if err != nil {
 		return
