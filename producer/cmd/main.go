@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"producer/internal/app"
+
+	_ "github.com/joho/godotenv/autoload"
+)
 
 func main() {
-	fmt.Printf("hello world!")
+	app.Start()
 }
