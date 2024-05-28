@@ -8,5 +8,5 @@
 
 *.out
 
-prodcuer/go.work
-prodcuer/.idea
+*go.work
+*.idea

@@ -4,10 +4,11 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"syscall"
+
 	"producer/internal/api"
 	"producer/internal/cfg"
 	"producer/internal/entities"
-	"syscall"
 )
 
 func Start() {
@@ -20,6 +21,6 @@ func Start() {
 
 	go binance.Start(ctx, info)
 	// producer := kafka.New()
-	// producer.Start(infoChan)
+	// producer.Start(ctx, infoChan)
 
 }
