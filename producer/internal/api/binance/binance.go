@@ -16,8 +16,12 @@ type Binance struct {
 	url string
 }
 
-func New() {
+func New(currency string) Binance {
+	url := baseURL + currency
 
+	return Binance{
+		url: url,
+	}
 }
 
 func (b Binance) Get(_ context.Context) (result []entities.Currency, err error) {
