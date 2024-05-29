@@ -22,7 +22,7 @@ type Binance struct {
 
 func New(currency []string) Binance {
 	if len(currency) < 0 {
-		return Binance{}
+		currency = []string{"BTCUSDT", "ETHUSDT", "XRPUSDT", "BCHUSDT", "EOSUSDT", "LTCUSDT", "TRXUSDT", "ADAUSDT", "BSVUSDT", "DOTUSDT", "XMRUSDT", "XLMUSDT", "XTZUSDT", "ZECUSDT", "ONTUSDT", "THETAUSDT", "VETUSDT", "MATICUSDT", "SOLUSDT", "AVAXUSDT", "LUNAUSDT", "LINKUSDT", "ATOMUSDT", "FILUSDT", "SXPUSDT", "UNIUSDT", "ALGOUSDT", "ZILUSDT", "ICXUSDT", "BTTUSDT", "NEOUSDT", "QTUMUSDT", "IOSTUSDT", "TUSDUSDT"}
 	}
 
 	urlBuilder := strings.Builder{}
@@ -70,15 +70,14 @@ func (b Binance) Get(_ context.Context) (result []entities.Currency, err error) 
 	result = make([]entities.Currency, 0, len(binanceResult))
 	for _, value := range binanceResult {
 		tmp := entities.Currency{
-			Market:      marketName,
-			Symbol:      value.Symbol,
-			OpenPrice:   value.OpenPrice,
-			HighPrice:   value.HighPrice,
-			LowPrice:    value.LowPrice,
-			LastPrice:   value.LastPrice,
-			Volume:      value.Volume,
-			QuoteVolume: value.QuoteVolume,
-			Count:       value.Count,
+			Market:    marketName,
+			Symbol:    value.Symbol,
+			OpenPrice: value.OpenPrice,
+			HighPrice: value.HighPrice,
+			LowPrice:  value.LowPrice,
+			LastPrice: value.LastPrice,
+			Volume:    value.Volume,
+			Count:     value.Count,
 		}
 
 		result = append(result, tmp)
