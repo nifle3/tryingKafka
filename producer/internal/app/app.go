@@ -4,8 +4,11 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"producer/internal/producer"
 	"syscall"
 
+	"producer/internal/api/binance"
+	"producer/internal/api/kafka"
 	"producer/internal/cfg"
 	"producer/internal/entities"
 	"producer/internal/sender"
@@ -13,15 +16,20 @@ import (
 
 func Start() {
 	config := cfg.New()
-	binance := sender.New(config.Timeout, config.CurrencyNames)
+
+	market := binance.New(config.CurrencyNames)
+
+	api := sender.New(config.Timeout, market)
 	info := make(chan []entities.Currency)
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
-	go binance.Start(ctx, info)
+	go api.Start(ctx, info)
 
-	// producer := kafka.New()
-	// producer.Start(ctx, infoChan)
+	kaf := kafka.New()
+
+	prod := producer.New(kaf)
+	prod.Start(ctx, info)
 
 }

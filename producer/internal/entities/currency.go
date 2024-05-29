@@ -1,6 +1,9 @@
 package entities
 
+import "time"
+
 type Currency struct {
+	TimeNow     time.Time
 	Symbol      string `json:"symbol"`
 	OpenPrice   string `json:"openPrice"`
 	HighPrice   string `json:"highPrice"`
