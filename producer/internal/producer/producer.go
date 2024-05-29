@@ -20,7 +20,7 @@ func New(sender Sender) *Producer {
 	}
 }
 
-func (p *Producer) Start(ctx context.Context, info <-chan []entities.Currency) {
+func (p *Producer) Start(ctx context.Context, info <-chan entities.Message) {
 	for {
 		select {
 		case result := <-info:

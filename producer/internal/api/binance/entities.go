@@ -1,7 +1,6 @@
-package entities
+package binance
 
 type Currency struct {
-	Market      string `json:"market"`
 	Symbol      string `json:"symbol"`
 	OpenPrice   string `json:"openPrice"`
 	HighPrice   string `json:"highPrice"`

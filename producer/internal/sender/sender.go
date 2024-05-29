@@ -23,13 +23,17 @@ func New(timeout time.Duration, exchanges ...Exchange) *Sender {
 	}
 }
 
-func (s Sender) Start(ctx context.Context, infoChan chan<- []entities.Currency) {
+func (s Sender) Start(ctx context.Context, infoChan chan<- entities.Message) {
 	for {
 		select {
 		case <-time.After(s.timeout):
 			result := s.getCurrency(ctx)
+			msg := entities.Message{
+				Id:         time.Now().String(),
+				Currencies: result,
+			}
 
-			infoChan <- result
+			infoChan <- msg
 		case <-ctx.Done():
 			return
 		}
