@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"os"
+	"strings"
 	"time"
 )
 
@@ -10,15 +11,17 @@ type Cfg struct {
 }
 
 type APICfg struct {
-	CurrencyNames string
+	CurrencyNames []string
 	Timeout       time.Duration
 }
 
 func New() *Cfg {
 	cur, ok := os.LookupEnv("CURRENCY")
 	if !ok {
-		cur = "[\"BTCUSDT\"]"
+		cur = "BTCUSDT"
 	}
+
+	curs := strings.Split(cur, ",")
 
 	timeout, ok := os.LookupEnv("TIMEOUT")
 	if !ok {
@@ -32,7 +35,7 @@ func New() *Cfg {
 
 	return &Cfg{
 		APICfg: APICfg{
-			CurrencyNames: cur,
+			CurrencyNames: curs,
 			Timeout:       parsedTimeout,
 		},
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"producer/internal/api/bybit"
 	"producer/internal/kafka"
 	"producer/internal/producer"
 	"syscall"
@@ -17,9 +18,10 @@ import (
 func Start() {
 	config := cfg.New()
 
-	market := binance.New(config.CurrencyNames)
+	binanceAPI := binance.New(config.CurrencyNames)
+	bybitAPI := bybit.New(config.CurrencyNames)
 
-	api := sender.New(config.Timeout, market)
+	api := sender.New(config.Timeout, binanceAPI, bybitAPI)
 	info := make(chan entities.Message)
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
