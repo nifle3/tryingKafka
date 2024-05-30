@@ -1,15 +1,24 @@
 package email
 
 import (
+	"bytes"
+
 	"consumerSMTP/internal/entities"
 )
 
-type Builder struct {
-	email Email
+type Templater interface {
+	Render(data []entities.Currency) (bytes.Buffer, error)
 }
 
-func New() *Builder {
-	return &Builder{}
+type Builder struct {
+	email    Email
+	template Templater
+}
+
+func New(template Templater) *Builder {
+	return &Builder{
+		template: template,
+	}
 }
 
 func (b *Builder) SetFrom(from string) {
@@ -24,7 +33,11 @@ func (b *Builder) SetSubject(subject string) {
 	b.email.Subject = subject
 }
 
-func (b *Builder) SetBody(currencies []entities.Currency) {
+func (b *Builder) SetBody(currencies []entities.Currency) error {
+	var err error
+
+	b.email.Body, err = b.template.Render(currencies)
+	return err
 }
 
 func (b *Builder) Build() Email {
