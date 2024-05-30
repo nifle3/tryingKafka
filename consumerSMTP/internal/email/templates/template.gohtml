@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
+<body>
+<table style="width:100%">
+    <tr>
+        <th>Market</th>
+        <th>Currency</th>
+        <th>Open price</th>
+        <th>High price</th>
+        <th>Low price</th>
+        <th>Last price</th>
+        <th>Volume</th>
+        <th>Count</th>
+    </tr>
+    {{ range .Messages }}
+        <tr>
+            <td>{{ .Market }}}</td>
+            <td>{{ .Currency }}}</td>
+            <td>{{ .OpenPrice }}}</td>
+            <td>{{ .HighPrice }}}</td>
+            <td>{{ .LowPrice }}}</td>
+            <td>{{ .LastPrice }}}</td>
+            <td>{{ .Volume }}}</td>
+            <td>{{ .Count }}}</td>
+        </tr>
+    {{end}}
+</table>
+</body>
+</html>
+

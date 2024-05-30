@@ -16,7 +16,11 @@ type SMTP struct {
 }
 
 func New(auth smtp.Auth, addr, from string) *SMTP {
-	return &SMTP{}
+	return &SMTP{
+		auth: auth,
+		addr: addr,
+		from: from,
+	}
 }
 
 func (s *SMTP) Start(ctx context.Context, info <-chan entities.Message) {
