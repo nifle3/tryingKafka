@@ -13,8 +13,13 @@ type Consumer struct {
 	reader *kafka.Reader
 }
 
-func New() *Consumer {
-	reader := kafka.NewReader(kafka.ReaderConfig{})
+func New(topicName string, partition int, brokers ...string) *Consumer {
+	reader := kafka.NewReader(kafka.ReaderConfig{
+		Brokers:   brokers,
+		Topic:     topicName,
+		Partition: partition,
+		MaxBytes:  10e6, // 10MB
+	})
 
 	return &Consumer{
 		reader: reader,

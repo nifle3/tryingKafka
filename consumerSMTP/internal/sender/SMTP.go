@@ -6,6 +6,7 @@ import (
 	"net/smtp"
 
 	"consumerSMTP/internal/entities"
+	"consumerSMTP/internal/templates"
 )
 
 type SMTP struct {
@@ -35,10 +36,13 @@ func (s *SMTP) Start(ctx context.Context, info <-chan entities.Message) {
 }
 
 func (s *SMTP) Send(_ context.Context, msg entities.Message) {
-	builder := email.New()
+	builder := email.New(templates.New())
 	builder.SetFrom(s.from)
 	builder.SetSubject(msg.Id)
-	builder.SetBody(msg.Result)
+	err := builder.SetBody(msg.Result)
+	if err != nil {
+		return
+	}
 
 	for _, value := range s.to {
 		builder.SetTo(value)
