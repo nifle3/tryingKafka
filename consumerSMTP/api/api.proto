@@ -1,0 +1,25 @@
+syntax = "3";
+import "google/protobuf/empty.proto";
+package api;
+
+message User {
+  required string id = 1;
+  required string name = 2;
+  required string email = 3;
+}
+
+message UserList {
+  repeated User users = 1;
+}
+
+message Response {
+  required bool isSuccess = 1;
+  required string error = 2;
+}
+
+service UserService {
+  rpc Add(User) returns(Response);
+  rpc Delete(User) returns(Response);
+  rpc Update(User) returns(Response);
+  rpc Get(google.protobuf.Empty) returns(UserList);
+}
