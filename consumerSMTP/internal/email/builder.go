@@ -7,7 +7,7 @@ import (
 )
 
 type Templater interface {
-	Render(data []entities.Currency) (bytes.Buffer, error)
+	Render(data []entities.Currency, subject string) (bytes.Buffer, error)
 }
 
 type Builder struct {
@@ -36,7 +36,7 @@ func (b *Builder) SetSubject(subject string) {
 func (b *Builder) SetBody(currencies []entities.Currency) error {
 	var err error
 
-	b.email.Body, err = b.template.Render(currencies)
+	b.email.Body, err = b.template.Render(currencies, b.email.Subject)
 	return err
 }
 
